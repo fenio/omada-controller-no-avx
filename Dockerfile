@@ -8,6 +8,11 @@ FROM ghcr.io/fenio/mongodb-no-avx:7.0.28 AS mongodb
 # Stage 2: Build Omada Controller
 FROM ubuntu:24.04
 
+# OCI labels for GitHub Container Registry
+LABEL org.opencontainers.image.source=https://github.com/fenio/omada-controller-no-avx
+LABEL org.opencontainers.image.description="TP-Link Omada Controller for CPUs without AVX support"
+LABEL org.opencontainers.image.licenses=MIT
+
 # Copy install script and mbentley scripts
 COPY --chmod=755 install.sh /
 COPY --chmod=755 mbentley/healthcheck.sh /mbentley/
