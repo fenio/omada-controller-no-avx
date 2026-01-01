@@ -31,8 +31,7 @@ RUN /install.sh && rm /install.sh && rm /mbentley/install.sh
 
 # Copy mbentley entrypoint and patch it to skip AVX check
 COPY --chmod=755 mbentley/entrypoint-unified.sh /mbentley/entrypoint.sh
-RUN sed -i 's/check_cpu_features$/check_cpu_features_original/' /mbentley/entrypoint.sh && \
-    echo 'check_cpu_features() { echo "INFO: Skipping AVX check - using MongoDB without AVX requirement"; }' >> /mbentley/entrypoint.sh
+RUN sed -i 's/^  check_cpu_features$/  : # check_cpu_features disabled - using MongoDB without AVX/' /mbentley/entrypoint.sh
 
 WORKDIR /opt/tplink/EAPController/lib
 EXPOSE 8088 8043 8843 27001/udp 29810/udp 29811 29812 29813 29814 29815 29816 29817
