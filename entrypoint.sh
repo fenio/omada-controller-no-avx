@@ -10,12 +10,8 @@ set -e
 # Home Assistant specific preprocessing
 # ======================================
 
-# Check if bashio is available (running in HA), otherwise use echo
-if command -v bashio &> /dev/null; then
-  log_info() { bashio::log.info "$1"; }
-else
-  log_info() { echo "INFO: $1"; }
-fi
+# Simple logging function
+log_info() { echo "INFO: $1"; }
 
 # Create data and logs dir if not existing
 log_info "Create 'logs' directory inside persistent /data volume, if it doesn't exist."
@@ -40,31 +36,6 @@ fi
 
 # Set permissions on /data directory for Home Assistant persistence
 chown -R 508:508 "/data"
-
-# Use SSL Keys from Home Assistant
-if [ -n "${BASHIO_SUPERVISOR_TOKEN:-}" ]; then
-  # Running in Home Assistant
-  if bashio::config.true 'enable_hass_ssl'; then
-    log_info "Use SSL from Home Assistant"
-    SSL_CERT_NAME=$(bashio::config 'certfile')
-    log_info "SSL certificate: ${SSL_CERT_NAME}"
-    SSL_KEY_NAME=$(bashio::config 'keyfile')
-    log_info "SSL private key: ${SSL_KEY_NAME}"
-
-    # Put keys in /cert folder, this is how mbentley expects it
-    mkdir -p /cert
-    cp "/ssl/$SSL_CERT_NAME" /cert/
-    cp "/ssl/$SSL_KEY_NAME" /cert/
-
-    export SSL_CERT_NAME="$(basename "$SSL_CERT_NAME")"
-    export SSL_KEY_NAME="$(basename "$SSL_KEY_NAME")"
-  fi
-
-  if bashio::config.true 'enable_workaround_509'; then
-    log_info "Enable workaround for issue #509"
-    export WORKAROUND_509=true
-  fi
-fi
 
 # Don't use rootless mode for this Add-On
 export ROOTLESS=false
