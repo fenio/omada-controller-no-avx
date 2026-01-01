@@ -29,13 +29,14 @@ ARG NO_MONGODB=true
 # Install Omada Controller
 RUN /install.sh && rm /install.sh && rm /mbentley/install.sh
 
-# Copy entrypoint after installation to avoid rebuilding whole image on changes
-COPY --chmod=755 entrypoint.sh /
+# Copy mbentley entrypoint and patch it to skip AVX check
 COPY --chmod=755 mbentley/entrypoint-unified.sh /mbentley/entrypoint.sh
+RUN sed -i 's/check_cpu_features$/check_cpu_features_original/' /mbentley/entrypoint.sh && \
+    echo 'check_cpu_features() { echo "INFO: Skipping AVX check - using MongoDB without AVX requirement"; }' >> /mbentley/entrypoint.sh
 
 WORKDIR /opt/tplink/EAPController/lib
 EXPOSE 8088 8043 8843 27001/udp 29810/udp 29811 29812 29813 29814 29815 29816 29817
 HEALTHCHECK --start-period=6m CMD /mbentley/healthcheck.sh
 VOLUME ["/data"]
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/mbentley/entrypoint.sh"]
 CMD ["/usr/bin/java","-server","-Xms128m","-Xmx1024m","-XX:MaxHeapFreeRatio=60","-XX:MinHeapFreeRatio=30","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/opt/tplink/EAPController/logs/java_heapdump.hprof","-Djava.awt.headless=true","--add-opens","java.base/java.util=ALL-UNNAMED","-cp","/opt/tplink/EAPController/lib/*::/opt/tplink/EAPController/properties:","com.tplink.smb.omada.starter.OmadaLinuxMain"]
