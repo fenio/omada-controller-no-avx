@@ -9,9 +9,9 @@ FROM ghcr.io/fenio/mongodb-no-avx:7.0.28 AS mongodb
 FROM ubuntu:24.04
 
 # Copy install script and mbentley scripts
-COPY install.sh /
-COPY mbentley/healthcheck.sh /mbentley/
-COPY mbentley/install.sh /mbentley/
+COPY --chmod=755 install.sh /
+COPY --chmod=755 mbentley/healthcheck.sh /mbentley/
+COPY --chmod=755 mbentley/install.sh /mbentley/
 
 # Copy MongoDB binaries from the no-AVX build
 COPY --from=mongodb /usr/local/bin/mongod /usr/bin/mongod
@@ -30,8 +30,8 @@ ARG NO_MONGODB=true
 RUN /install.sh && rm /install.sh && rm /mbentley/install.sh
 
 # Copy entrypoint after installation to avoid rebuilding whole image on changes
-COPY entrypoint.sh /
-COPY mbentley/entrypoint-unified.sh /mbentley/entrypoint.sh
+COPY --chmod=755 entrypoint.sh /
+COPY --chmod=755 mbentley/entrypoint-unified.sh /mbentley/entrypoint.sh
 
 WORKDIR /opt/tplink/EAPController/lib
 EXPOSE 8088 8043 8843 27001/udp 29810/udp 29811 29812 29813 29814 29815 29816 29817
