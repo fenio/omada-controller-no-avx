@@ -33,6 +33,13 @@ RUN /install.sh && rm /install.sh && rm /mbentley/install.sh
 COPY --chmod=755 mbentley/entrypoint-unified.sh /mbentley/entrypoint.sh
 RUN sed -i 's/^  check_cpu_features$/  : # check_cpu_features disabled - using MongoDB without AVX/' /mbentley/entrypoint.sh
 
+# Verify mongod binary and symlink
+RUN echo "=== Verifying MongoDB setup ===" && \
+    ls -la /usr/bin/mongod && \
+    ls -la /opt/tplink/EAPController/bin/mongod && \
+    file /usr/bin/mongod && \
+    /usr/bin/mongod --version || echo "mongod --version failed (expected on non-AVX build machine)"
+
 WORKDIR /opt/tplink/EAPController/lib
 EXPOSE 8088 8043 8843 27001/udp 29810/udp 29811 29812 29813 29814 29815 29816 29817
 HEALTHCHECK --start-period=6m CMD /mbentley/healthcheck.sh
