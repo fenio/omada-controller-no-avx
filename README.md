@@ -4,7 +4,7 @@ TP-Link Omada Controller Docker image for CPUs **without AVX support**.
 
 ## The Problem
 
-The official Omada Controller v6.x Docker images (including [mbentley/omada-controller](https://github.com/mbentley/docker-omada-controller)) ship with MongoDB 8.x, which requires AVX CPU instructions. Many CPUs lack AVX support, including:
+The official Omada Controller v6.x Docker images (including [mbentley/omada-controller](https://github.com/mbentley/docker-omada-controller)) ship with MongoDB binaries that require AVX CPU instructions. Many CPUs lack AVX support, including:
 
 - Intel Atom processors (many models through 2020+)
 - Low-power Intel Celeron/Pentium (Atom-based)
@@ -12,7 +12,7 @@ The official Omada Controller v6.x Docker images (including [mbentley/omada-cont
 - Older Intel CPUs (pre-Sandy Bridge)
 - Older AMD CPUs (pre-Bulldozer)
 
-These CPUs cannot run MongoDB 8.x and therefore cannot run standard Omada Controller v6.x images.
+These CPUs cannot run standard MongoDB binaries and therefore cannot run standard Omada Controller v6.x images.
 
 ## The Solution
 
