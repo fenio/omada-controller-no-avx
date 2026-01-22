@@ -11,7 +11,7 @@ on:
       omada_version:
         description: 'Omada Controller version to build'
         required: true
-        default: '6.0.0.25'
+        default: '6.1.0.19'
         type: string
 
 env:
@@ -50,9 +50,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=6.0.0.25-ha1
-            type=raw,value=6.0.0.25
-            type=raw,value=6.0
+            type=raw,value=6.1.0.19-ha1
+            type=raw,value=6.1.0.19
+            type=raw,value=6.1
             type=raw,value=6
             type=raw,value=latest
 
@@ -65,7 +65,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            INSTALL_VER=6.0.0.25
+            INSTALL_VER=6.1.0.19
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
