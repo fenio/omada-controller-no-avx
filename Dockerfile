@@ -26,7 +26,7 @@ COPY --from=mongodb /usr/local/bin/mongos /usr/bin/mongos
 ARG ARCH=amd64
 
 # Omada Controller version to install
-ARG INSTALL_VER=6.0.0.25
+ARG INSTALL_VER=6.1.0.19
 
 # Skip MongoDB installation since we copied binaries above
 ARG NO_MONGODB=true
@@ -46,8 +46,8 @@ RUN echo "=== Verifying MongoDB setup ===" && \
     /usr/bin/mongod --version || echo "mongod --version failed (expected on non-AVX build machine)"
 
 WORKDIR /opt/tplink/EAPController/lib
-EXPOSE 8088 8043 8843 27001/udp 29810/udp 29811 29812 29813 29814 29815 29816 29817
+EXPOSE 8088 8043 8843 19810/udp 27001/udp 29810/udp 29811 29812 29813 29814 29815 29816 29817
 HEALTHCHECK --start-period=6m CMD /mbentley/healthcheck.sh
 VOLUME ["/data"]
 ENTRYPOINT ["/mbentley/entrypoint.sh"]
-CMD ["/usr/bin/java","-server","-Xms128m","-Xmx1024m","-XX:MaxHeapFreeRatio=60","-XX:MinHeapFreeRatio=30","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/opt/tplink/EAPController/logs/java_heapdump.hprof","-Djava.awt.headless=true","--add-opens","java.base/java.util=ALL-UNNAMED","-cp","/opt/tplink/EAPController/lib/*::/opt/tplink/EAPController/properties:","com.tplink.smb.omada.starter.OmadaLinuxMain"]
+CMD ["/usr/bin/java","-server","-Xms128m","-Xmx1024m","-XX:MaxHeapFreeRatio=60","-XX:MinHeapFreeRatio=30","-XX:+HeapDumpOnOutOfMemoryError","-XX:HeapDumpPath=/opt/tplink/EAPController/logs/java_heapdump.hprof","-Djava.awt.headless=true","--add-opens","java.base/sun.security.x509=ALL-UNNAMED","--add-opens","java.base/sun.security.util=ALL-UNNAMED","-cp","/opt/tplink/EAPController/lib/*:/opt/tplink/EAPController/properties","com.tplink.smb.omada.starter.OmadaLinuxMain"]
