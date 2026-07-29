@@ -26,7 +26,7 @@ COPY --from=mongodb /usr/local/bin/mongos /usr/bin/mongos
 ARG ARCH=amd64
 
 # Omada Controller version to install
-ARG INSTALL_VER=6.1.0.19
+ARG INSTALL_VER=6.2.14.11
 
 # Skip MongoDB installation since we copied binaries above
 ARG NO_MONGODB=true

@@ -17,7 +17,7 @@ These CPUs cannot run standard MongoDB binaries and therefore cannot run standar
 ## The Solution
 
 This image bundles:
-- **Omada Controller 6.1.0.19** - The latest TP-Link Omada Controller
+- **Omada Controller 6.2.14.11** - The latest TP-Link Omada Controller
 - **MongoDB 7.0.28 (No AVX)** - MongoDB compiled from source without AVX requirements from [fenio/mongodb-no-avx](https://github.com/fenio/mongodb-no-avx)
 
 ## Usage
@@ -73,7 +73,7 @@ https://github.com/fenio/ha-addons
 
 ## Available Tags
 
-- `latest`, `6`, `6.1`, `6.1.0.19` - Omada Controller 6.1.0.19 with MongoDB 7.0.28
+- `latest`, `6`, `6.2`, `6.2.14.11` - Omada Controller 6.2.14.11 with MongoDB 7.0.28
 
 ## Architecture
 
