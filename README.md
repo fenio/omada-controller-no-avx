@@ -17,8 +17,8 @@ These CPUs cannot run standard MongoDB binaries and therefore cannot run standar
 ## The Solution
 
 This image bundles:
-- **Omada Controller 6.2.14.11** - The latest TP-Link Omada Controller
-- **MongoDB 7.0.28 (No AVX)** - MongoDB compiled from source without AVX requirements from [fenio/mongodb-no-avx](https://github.com/fenio/mongodb-no-avx)
+- **Omada Controller 6.3.0.45** - The latest TP-Link Omada Controller
+- **MongoDB 8.0.26 (No AVX)** - MongoDB compiled from source without AVX requirements by [rnsc/mongodb-without-avx](https://github.com/rnsc/mongodb-without-avx)
 
 ## Usage
 
@@ -28,6 +28,7 @@ This image bundles:
 docker run -d \
   --name omada-controller \
   --restart unless-stopped \
+  -p 8044:8044 \
   -p 8088:8088 \
   -p 8043:8043 \
   -p 8843:8843 \
@@ -48,6 +49,7 @@ services:
     container_name: omada-controller
     restart: unless-stopped
     ports:
+      - "8044:8044"
       - "8088:8088"
       - "8043:8043"
       - "8843:8843"
@@ -73,7 +75,11 @@ https://github.com/fenio/ha-addons
 
 ## Available Tags
 
-- `latest`, `6`, `6.2`, `6.2.14.11` - Omada Controller 6.2.14.11 with MongoDB 7.0.28
+- `latest`, `6`, `6.3`, `6.3.0.45`, `6.3.0.45-ha1` - Omada Controller 6.3.0.45 with MongoDB 8.0.26
+
+## Upgrades
+
+Upgrades from `6.2.14.11-ha1` replace MongoDB 7.0 with MongoDB 8.0. MongoDB initially retains feature compatibility version 7.0, while Omada migrates its application database and writes a new version marker. Stop the container and back up the persistent `/data` volume before upgrading; direct rollback is not supported, so restore that backup if you need to return to the previous image.
 
 ## Architecture
 
@@ -83,7 +89,7 @@ https://github.com/fenio/ha-addons
 
 - [mbentley/docker-omada-controller](https://github.com/mbentley/docker-omada-controller) - Original Omada Controller Docker image
 - [jkunczik/home-assistant-omada](https://github.com/jkunczik/home-assistant-omada) - Home Assistant add-on for Omada Controller
-- [fenio/mongodb-no-avx](https://github.com/fenio/mongodb-no-avx) - MongoDB compiled without AVX requirements
+- [rnsc/mongodb-without-avx](https://github.com/rnsc/mongodb-without-avx) - MongoDB 8 compiled without AVX requirements
 
 ## License
 

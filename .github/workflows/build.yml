@@ -11,7 +11,7 @@ on:
       omada_version:
         description: 'Omada Controller version to build'
         required: true
-        default: '6.2.14.11'
+        default: '6.3.0.45'
         type: string
 
 env:
@@ -20,6 +20,7 @@ env:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -50,9 +51,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=6.2.14.11-ha1
-            type=raw,value=6.2.14.11
-            type=raw,value=6.2
+            type=raw,value=6.3.0.45-ha1
+            type=raw,value=6.3.0.45
+            type=raw,value=6.3
             type=raw,value=6
             type=raw,value=latest
 
@@ -65,7 +66,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            INSTALL_VER=6.2.14.11
+            INSTALL_VER=6.3.0.45
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
